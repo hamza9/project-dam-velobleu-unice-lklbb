@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Application;
 
 public class MainApplication extends Application {
-	ArrayList<Station> tweets = new ArrayList<Station>();
-	Station station;
+	
+	ArrayList<Station> stations = new ArrayList<Station>();
+	
 }

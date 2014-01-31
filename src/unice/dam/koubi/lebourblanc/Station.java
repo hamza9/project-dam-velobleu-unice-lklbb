@@ -1,5 +1,7 @@
 package unice.dam.koubi.lebourblanc;
 
+import java.util.Comparator;
+
 public class Station {
 	
 	private int idStation;
@@ -12,6 +14,7 @@ public class Station {
 	private int capaDisp;
 	private int plaDisp;
 	private int veloDisp;
+	private double distance;
 	
 	public Station(int idStation, String nomStation, String adresse, int dispo,
 			double longitude, double latitude, int capaTot, int capaDisp,
@@ -27,8 +30,17 @@ public class Station {
 		this.capaDisp = capaDisp;
 		this.plaDisp = plaDisp;
 		this.veloDisp = veloDisp;
+		this.distance = 0;
 	}
 	
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
 	public int getIdStation() {
 		return idStation;
 	}
@@ -91,5 +103,41 @@ public class Station {
 	public void setDisponibilite(int disponibilite) {
 		this.disponibilite = disponibilite;
 	}
+	
+	static Comparator<Station> veloComparator() {
+        return new Comparator<Station>() {
+
+			@Override
+			public int compare(Station lhs, Station rhs) {
+				int velo1 = lhs.getVeloDisp();
+				int velo2 = rhs.getVeloDisp();
+				return velo1 < velo2 ? -1 : velo1 == velo2 ? 0 : 1;
+			}
+        };
+    }
+
+    static Comparator<Station> placeComparator() {
+        return new Comparator<Station>() {
+
+			@Override
+			public int compare(Station lhs, Station rhs) {
+				int pla1 = lhs.getPlaDisp();
+				int pla2 = rhs.getPlaDisp();
+				return pla1 < pla2 ? -1 : pla1 == pla2 ? 0 : 1;
+			}
+        };
+    }
+    
+    static Comparator<Station> distanceComparator() {
+        return new Comparator<Station>() {
+
+			@Override
+			public int compare(Station lhs, Station rhs) {
+				double dis1 = lhs.getDistance();
+				double dis2 = rhs.getDistance();
+				return dis1 < dis2 ? -1 : dis1 == dis2 ? 0 : 1;
+			}
+        };
+    }
 
 }
