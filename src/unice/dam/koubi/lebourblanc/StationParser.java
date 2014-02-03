@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -81,7 +82,15 @@ public class StationParser {
 			for (int j = 0; j < children.getLength(); j++) {
 				Element child = (Element) children.item(j);
 				if (child.getNodeName().equals("wcom")) {
-					adresse = (child.getTextContent() != null)?child.getTextContent():"";
+					try {
+						adresse = (child.getTextContent() != null)?URLDecoder.decode(child.getTextContent(), "UTF-8"):"";
+					} catch (DOMException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				} else if (child.getNodeName().equals("disp")) {
 					dispo = (child.getTextContent() != null)?child.getTextContent():"0";
 				} else if (child.getNodeName().equals("lng")) {
@@ -111,20 +120,6 @@ public class StationParser {
 				stations.add(sta);
 			}			
 		}
-
-		/*
-		 * for (RemoteConfig.ElderKey key : RemoteConfig.ElderKey.values()) {
-		 * 
-		 * NodeList list = racine.getElementsByTagName(key.NAME);
-		 * 
-		 * 
-		 * if(list.getLength()==0) { continue; }
-		 * 
-		 * if(list.getLength()>1) { throw new BadXMLException(); }
-		 * 
-		 * Element e = (Element)list.item(0); String value = e.getTextContent();
-		 * remoteConfig.put(key, value); }
-		 */
 
 		return stations;
 	}

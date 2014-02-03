@@ -1,43 +1,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical" >
     
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+            android:padding="10dip"
+            android:background="#333333"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textViewIdStation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tri : " />
+                android:layout_marginRight="10dip"
+                android:text="Tri : " 
+                android:textSize="16sp"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/buttonVelo"
-                style="?android:attr/buttonStyleSmall"
+                android:background="@drawable/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Vélos" />
+                android:layout_marginRight="10dip"
+                android:text="Vélos" 
+                android:textSize="16sp"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/buttonPlaces"
-                style="?android:attr/buttonStyleSmall"
+                android:background="@drawable/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Places" />
+                android:layout_marginRight="10dip"
+                android:text="Places" 
+                android:textSize="16sp"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/buttonDist"
-                style="?android:attr/buttonStyleSmall"
+                android:background="@drawable/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Distances" />
+                android:text="Distances" 
+                android:textSize="16sp"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 

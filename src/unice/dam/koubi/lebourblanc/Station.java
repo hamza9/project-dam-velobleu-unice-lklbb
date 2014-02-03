@@ -111,7 +111,7 @@ public class Station {
 			public int compare(Station lhs, Station rhs) {
 				int velo1 = lhs.getVeloDisp();
 				int velo2 = rhs.getVeloDisp();
-				return velo1 < velo2 ? -1 : velo1 == velo2 ? 0 : 1;
+				return velo1 > velo2 ? -1 : velo1 == velo2 ? 0 : 1;
 			}
         };
     }
@@ -123,7 +123,7 @@ public class Station {
 			public int compare(Station lhs, Station rhs) {
 				int pla1 = lhs.getPlaDisp();
 				int pla2 = rhs.getPlaDisp();
-				return pla1 < pla2 ? -1 : pla1 == pla2 ? 0 : 1;
+				return pla1 > pla2 ? -1 : pla1 == pla2 ? 0 : 1;
 			}
         };
     }
