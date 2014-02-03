@@ -1,17 +1,19 @@
 package unice.dam.koubi.lebourblanc;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.Xml;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -29,98 +31,78 @@ public class SplashscreenActivity extends Activity{
     //private ArrayList<Station> listPars;
     
     private MainApplication main;
-
+    private ImageView img;
+    private ProgressBar progress;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splashscreen);
 		
-		main = (MainApplication) getApplication();		
-	
-	     mProgress = (ProgressBar) findViewById(R.id.progressBar2);
-	
-	     // Start lengthy operation in a background thread
-	     new Thread(new Runnable() {
-	         public void run() {
-	             while (mProgressStatus < 100) {
-	                 mProgressStatus = doWork();
-	
-	                 // Update the progress bar
-	                 mHandler.post(new Runnable() {
-	                     public void run() {
-	                         mProgress.setProgress(mProgressStatus);
-	                     }
-	                 });
-	             }
-	             startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
-	         }
+		main = (MainApplication) getApplication();	
+		img = (ImageView) findViewById(R.id.imageView1);
+		progress = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		String url = "http://dam.lanoosphere.com/getVelos";
 
-			private int doWork() {
-				// TODO Auto-generated method stub
-				String url = "http://dam.lanoosphere.com/getVelos";
-
-				RequestParams params = new RequestParams();
+		RequestParams params = new RequestParams();
+		
+		client.get(url, params, new TextHttpResponseHandler() {
+			@Override
+			public void onSuccess(String xmlString) {
+				String idStation, nomStation, adresse = null, dispo = null, longitude = null, latitude = null
+						, capaTot = null, capaDisp = null, plaDisp = null, veloDisp = null; 						
 				
-				client.get(url, params, new TextHttpResponseHandler() {
+				StationParser parser = new StationParser();
+				main.stations = parser.parse(xmlString);
+				
+				progress.setVisibility(View.INVISIBLE);
+				
+			    Animation a = AnimationUtils.loadAnimation(SplashscreenActivity.this, R.anim.sortie);
+			    a.setFillAfter(true);
+			    a.setAnimationListener(new AnimationListener() {				
 					@Override
-					public void onSuccess(String xmlString) {
-						//parser.nextTag();
-						//parser.require(XmlPullParser.START_TAG, null, "site");
-//	int eventType = parser.getEventType();
-						String idStation, nomStation, adresse = null, dispo = null, longitude = null, latitude = null
-								, capaTot = null, capaDisp = null, plaDisp = null, veloDisp = null; 
-						// if (!cancel) {
-						/*while (parser.nextTag() == XmlPullParser.START_TAG) {
-							
-								//Log.v("td4", "eventType= " + parser.getName());
-								if (parser.getName().equals("stand")) {
-									idStation = parser.getAttributeValue(null, "id");
-									nomStation = parser.getAttributeValue(null, "first_name");
-									if(parser.getName().equals("wcom")){
-										adresse = parser.nextText();
-									}
-									else if(parser.getName().equals("disp")){
-										dispo = parser.nextText();
-									}
-									else if(parser.getName().equals("lng")){
-										longitude = parser.nextText();
-									}
-									else if(parser.getName().equals("lat")){
-										latitude = parser.nextText();										
-									}
-									else if(parser.getName().equals("tc")){
-										capaTot = parser.nextText();
-									}
-									else if(parser.getName().equals("ac")){
-										capaDisp = parser.nextText();
-									}
-									else if(parser.getName().equals("ap")){
-										plaDisp = parser.nextText();										
-									}
-									else if(parser.getName().equals("ab")){
-										veloDisp = parser.nextText();
-									}
-									
-									Station sta = new Station(Integer.parseInt(idStation), nomStation
-											, adresse, Integer.parseInt(dispo), Double.parseDouble(longitude), Double.parseDouble(latitude)
-											, Integer.parseInt(capaTot), Integer.parseInt(capaDisp), Integer.parseInt(plaDisp)
-											, Integer.parseInt(veloDisp));
-									main.stations.add(sta);
-								} 
-
-								parser.nextTag();
-						}*/
-						
-						StationParser parser = new StationParser();
-						main.stations = parser.parse(xmlString);
+					public void onAnimationStart(Animation animation) {
 					}
-				});
-				return 100;
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						Intent intent = new Intent(SplashscreenActivity.this, MainActivity.class);
+					    startActivity(intent);
+					    finish();					
+					}
+				});	
+			    
+			    img.startAnimation(a);
 			}
-	     }).start();
-	
-	     Log.e("S", "Y");
+		});	     
     }
+	
+	/*private class myTask extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			ArrayList<Station> stations = null;
+	    	try {
+	    		
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Log.i("doInBackground", "Stations loaded");
+			return null;
+		}
+		
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			//img.startAnimation(AnimationUtils.loadAnimation(SplashscreenActivity.this, R.anim.sortie));
+			
+			
+		    
+		}
+	}*/
 	
 }
